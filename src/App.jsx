@@ -1,5 +1,8 @@
-import { useState, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import "./App.css";
+import Survey from "./Survey";
+import SurveyResults from "./SurveyResults";
+import { computeCategoryScores, computeOverallPhase } from "./scoring";
 
 const phases = [
   {
@@ -350,14 +353,72 @@ function getLevelTier(level) {
   return { bg: "#E3F0F7", color: "#1B6B93", border: "#B3D7EA" };
 }
 
+const STORAGE_KEY = "zeal-readiness-assessment";
+
 export default function App() {
   const [active, setActive] = useState(null);
   const [expanded, setExpanded] = useState(null);
+  const [view, setView] = useState("framework"); // "framework" | "survey" | "results"
+  const [answers, setAnswers] = useState({});
+  const [results, setResults] = useState(null);
   const sel = active !== null ? phases[active] : null;
+
+  // Hydrate from localStorage
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (stored) {
+        if (stored.answers) setAnswers(stored.answers);
+        if (stored.results) setResults(stored.results);
+      }
+    } catch {}
+  }, []);
+
+  // Persist answers on change
+  useEffect(() => {
+    if (Object.keys(answers).length > 0) {
+      const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...stored, answers }));
+    }
+  }, [answers]);
 
   const handlePhase = (i) => {
     setActive(i);
     setExpanded(null);
+    setView("framework");
+  };
+
+  const handleStartSurvey = () => {
+    setView("survey");
+    setActive(null);
+  };
+
+  const handleSurveyComplete = () => {
+    const catScores = computeCategoryScores(answers);
+    const overall = computeOverallPhase(catScores);
+    const res = { ...overall, categoryScores: catScores };
+    setResults(res);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      answers,
+      results: res,
+      completedAt: Date.now(),
+    }));
+    setView("results");
+  };
+
+  const handleRetake = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    setAnswers({});
+    setResults(null);
+    setView("survey");
+  };
+
+  const handleViewResults = () => {
+    setView("results");
+  };
+
+  const handleExplorePhase = (idx) => {
+    handlePhase(idx);
   };
 
   return (
@@ -385,8 +446,42 @@ export default function App() {
           </div>
         </div>
 
+        {/* Assessment CTA */}
+        <div className="assessment-cta">
+          {results ? (
+            <>
+              <button className="assessment-cta-btn" onClick={handleViewResults}>
+                View Your Results — Phase {results.phase}
+              </button>
+              <button className="assessment-cta-link" onClick={handleRetake}>
+                Retake Assessment
+              </button>
+            </>
+          ) : (
+            <button className="assessment-cta-btn" onClick={handleStartSurvey}>
+              Take the Readiness Assessment
+            </button>
+          )}
+        </div>
+
+        {/* Survey / Results / Framework views */}
+        {view === "survey" ? (
+          <Survey
+            answers={answers}
+            onUpdateAnswers={setAnswers}
+            onComplete={handleSurveyComplete}
+            onCancel={() => setView("framework")}
+          />
+        ) : view === "results" && results ? (
+          <SurveyResults
+            results={results}
+            onExplorePhase={handleExplorePhase}
+            onRetake={handleRetake}
+          />
+        ) : null}
+
         {/* Phase Stepper */}
-        <div className="phase-stepper">
+        {view === "framework" && <div className="phase-stepper">
           {phases.map((p, i) => (
             <Fragment key={p.id}>
               <button
@@ -405,10 +500,10 @@ export default function App() {
               )}
             </Fragment>
           ))}
-        </div>
+        </div>}
 
         {/* Phase Detail */}
-        {sel ? (
+        {view === "framework" && (sel ? (
           <div className="phase-detail" key={sel.id}>
             {/* Phase Header */}
             <div className="phase-header">
@@ -518,7 +613,7 @@ export default function App() {
               Select a phase to see the IT maturity it requires, what blocks it, and exactly how Zeal helps you advance.
             </p>
           </div>
-        )}
+        ))}
 
         {/* Spectrum Bar */}
         <div className="spectrum">
