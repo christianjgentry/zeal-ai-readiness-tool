@@ -1,5 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
 import "./App.css";
+import ParticleHeader from "./ParticleHeader";
 import Survey from "./Survey";
 import SurveyResults from "./SurveyResults";
 import { computeCategoryScores, computeOverallPhase } from "./scoring";
@@ -424,28 +425,9 @@ export default function App() {
   return (
     <div className="app">
       {/* Header */}
-      <header className="header">
-        <div className="header-inner">
-          <div className="header-eyebrow">Zeal IT Consultants</div>
-          <div className="header-divider" />
-          <h1 className="header-title">Agentic Readiness Framework</h1>
-          <p className="header-subtitle">
-            The IT maturity required at each phase &mdash; and how Zeal moves you to the next one.
-          </p>
-        </div>
-      </header>
+      <ParticleHeader activePhase={active} />
 
       <div className="app-inner">
-        {/* Stripe Callout */}
-        <div className="stripe-callout" style={{ marginTop: 32 }}>
-          <div>
-            <div className="stripe-callout-eyebrow">Industry Benchmark: Stripe (Feb 2026)</div>
-            <p className="stripe-callout-text">
-              Stripe merges <strong>1,000+ AI-written PRs weekly</strong>. What made it possible: 400+ MCP tools, ephemeral devboxes in 10s, self-healing CI, agent rule files across every repo, and a dedicated Leverage team owning the platform full-time. <strong>The model is a commodity. The IT infrastructure is the moat.</strong>
-            </p>
-          </div>
-        </div>
-
         {/* Assessment CTA */}
         <div className="assessment-cta">
           {results ? (
