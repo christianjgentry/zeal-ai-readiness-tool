@@ -1,11 +1,70 @@
-* {
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+:root {
+  --bg-deep: #F7F8FA;
+  --bg-base: #FFFFFF;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #F0F2F5;
+  --bg-hover: #E8ECF2;
+
+  --border-subtle: #EDF0F4;
+  --border-default: #D1D9E6;
+  --border-emphasis: #B0BDD0;
+
+  --text-primary: #1A1A2E;
+  --text-secondary: #4A5568;
+  --text-tertiary: #718096;
+  --text-muted: #A0AEC0;
+
+  --red: #C0392B;
+  --red-soft: #E74C3C;
+
+  --navy: #0B2545;
+  --navy-medium: #13315C;
+  --accent: #1B6B93;
+  --accent-light: #E3F0F7;
+
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+}
+
 body {
-  margin: 0;
-  min-width: 320px;
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
   min-height: 100vh;
+  min-width: 320px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(11, 37, 69, 0.15);
+  color: #0B2545;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-emphasis);
+  border-radius: 3px;
 }
