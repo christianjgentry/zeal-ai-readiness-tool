@@ -337,7 +337,6 @@ const phases = [
   }
 ];
 
-const spectrumColors = ["#B0BDD0", "#8FA0BA", "#6E83A3", "#4D668C", "#2C4975", "#0B2545"];
 
 function getLevelTier(level) {
   const gray = ["None required yet", "None required", "Any"];
@@ -589,26 +588,6 @@ export default function App() {
           </div>
         ))}
 
-        {/* Spectrum Bar */}
-        <div className="spectrum">
-          <div className="spectrum-label">IT Readiness Spectrum</div>
-          <div className="spectrum-bar">
-            {phases.map((p, i) => (
-              <div
-                key={p.id}
-                className="spectrum-segment"
-                style={{
-                  background: spectrumColors[i],
-                  opacity: active !== null && active >= i ? 1 : 0.12,
-                }}
-              />
-            ))}
-          </div>
-          <div className="spectrum-endpoints">
-            <span className="spectrum-start">No IT Integration Required</span>
-            <span className="spectrum-end">Fleet-Scale Agent Infrastructure</span>
-          </div>
-        </div>
 
         <div className="footer">
           Inspired by Stripe Minions &mdash; 1,000+ AI-written PRs/week (Feb 2026) &bull; Zeal IT Consultants Agentic Readiness Framework

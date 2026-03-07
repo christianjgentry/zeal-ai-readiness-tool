@@ -15,14 +15,41 @@ export default function SurveyResults({ results, onExplorePhase, onRetake }) {
 
   return (
     <div className="results">
-      {/* Hero */}
+      {/* Hero + Spectrum */}
       <div className="results-hero">
-        <div className="results-hero-phase">{phase}</div>
-        <div className="results-hero-text">
-          <div className="results-hero-label">Your Organization Is At</div>
-          <h2 className="results-hero-title">Phase {phase}: {phaseNames[phase - 1]}</h2>
-          <div className="results-hero-avg">
-            Overall trajectory score: <strong>{average}</strong> / 6
+        <div className="results-hero-top">
+          <div className="results-hero-phase">{phase}</div>
+          <div className="results-hero-text">
+            <div className="results-hero-label">Your Organization Is At</div>
+            <h2 className="results-hero-title">Phase {phase}: {phaseNames[phase - 1]}</h2>
+            <div className="results-hero-avg">
+              Overall trajectory score: <strong>{average}</strong> / 6
+            </div>
+          </div>
+        </div>
+        <div className="results-spectrum">
+          <div className="results-spectrum-bar">
+            {spectrumColors.map((color, i) => (
+              <div
+                key={i}
+                className="results-spectrum-segment"
+                style={{
+                  background: color,
+                  opacity: i < phase ? 1 : 0.12,
+                }}
+              />
+            ))}
+          </div>
+          <div
+            className="results-spectrum-arrow"
+            style={{ left: `${((phase - 0.5) / 6) * 100}%` }}
+          >
+            <span className="results-spectrum-arrow-icon">&#9660;</span>
+            <span className="results-spectrum-arrow-label">You are here</span>
+          </div>
+          <div className="results-spectrum-endpoints">
+            <span className="spectrum-start">No IT Integration Required</span>
+            <span className="spectrum-end">Fleet-Scale Agent Infrastructure</span>
           </div>
         </div>
       </div>

@@ -543,45 +543,6 @@
    SPECTRUM BAR
    =================================== */
 
-.spectrum {
-  margin-top: 28px;
-  background: var(--bg-surface);
-  border-radius: var(--radius-lg);
-  padding: 22px 28px;
-  border: 1px solid var(--border-default);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
-}
-
-.spectrum-label {
-  font-family: var(--font-display);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 14px;
-}
-
-.spectrum-bar {
-  display: flex;
-  height: 5px;
-  border-radius: 5px;
-  overflow: hidden;
-  gap: 3px;
-}
-
-.spectrum-segment {
-  flex: 1;
-  border-radius: 5px;
-  transition: opacity 0.4s ease;
-}
-
-.spectrum-endpoints {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
 .spectrum-start {
   font-size: 10px;
   color: var(--text-muted);
@@ -961,15 +922,18 @@
 }
 
 .results-hero {
-  display: flex;
-  align-items: center;
-  gap: 28px;
   background: var(--bg-surface);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-default);
   box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
   padding: 36px 40px;
   margin-bottom: 16px;
+}
+
+.results-hero-top {
+  display: flex;
+  align-items: center;
+  gap: 28px;
 }
 
 .results-hero-phase {
@@ -1013,6 +977,57 @@
 
 .results-hero-avg strong {
   color: var(--text-primary);
+}
+
+.results-spectrum {
+  position: relative;
+  margin-top: 24px;
+  padding-bottom: 8px;
+}
+
+.results-spectrum-bar {
+  display: flex;
+  height: 6px;
+  border-radius: 5px;
+  overflow: hidden;
+  gap: 3px;
+}
+
+.results-spectrum-segment {
+  flex: 1;
+  border-radius: 5px;
+  transition: opacity 0.4s ease;
+}
+
+.results-spectrum-arrow {
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.results-spectrum-arrow-icon {
+  font-size: 14px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.results-spectrum-arrow-label {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.results-spectrum-endpoints {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 28px;
 }
 
 .results-section {
@@ -1195,9 +1210,11 @@
     padding: 24px 20px;
   }
   .results-hero {
+    padding: 28px 20px;
+  }
+  .results-hero-top {
     flex-direction: column;
     text-align: center;
-    padding: 28px 20px;
   }
   .results-bar-row {
     grid-template-columns: 1fr 36px;
