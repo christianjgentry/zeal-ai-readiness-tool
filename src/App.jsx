@@ -358,7 +358,7 @@ const STORAGE_KEY = "zeal-readiness-assessment";
 
 export default function App() {
   const [active, setActive] = useState(null);
-  const [expanded, setExpanded] = useState(null);
+
   const [view, setView] = useState("framework"); // "framework" | "survey" | "results"
   const [answers, setAnswers] = useState({});
   const [results, setResults] = useState(null);
@@ -385,7 +385,6 @@ export default function App() {
 
   const handlePhase = (i) => {
     setActive(i);
-    setExpanded(null);
     setView("framework");
   };
 
@@ -507,19 +506,15 @@ export default function App() {
             <div className="section">
               <div className="section-label" style={{ color: "var(--accent)" }}>
                 <span className="section-label-dot" style={{ background: "var(--accent)" }} />
-                IT Requirements &mdash; click any area to see how Zeal helps
+                IT Requirements
               </div>
               <div className="req-list">
                 {sel.requirements.map((req, i) => {
-                  const isOpen = expanded === i;
                   const tier = getLevelTier(req.level);
                   return (
-                    <div key={i} className={`req-card${isOpen ? " open" : ""}`}>
-                      <button
-                        className="req-card-header"
-                        onClick={() => setExpanded(isOpen ? null : i)}
-                      >
-                        <div>
+                    <div key={i} className="req-card">
+                      <div className="req-card-top">
+                        <div className="req-card-meta">
                           <div className="req-area-name">{req.area}</div>
                           <span
                             className="req-level-badge"
@@ -533,19 +528,16 @@ export default function App() {
                           </span>
                         </div>
                         <div className="req-detail">{req.detail}</div>
-                        <span className="req-chevron">{"\u203A"}</span>
-                      </button>
-                      {isOpen && (
-                        <div className="zeal-panel">
-                          <div className="zeal-service-name">{req.zealService}</div>
-                          <p className="zeal-service-desc">{req.zealDesc}</p>
-                          <div className="zeal-tags">
-                            {req.zealTags.map((t, j) => (
-                              <span key={j} className="zeal-tag">{t}</span>
-                            ))}
-                          </div>
+                      </div>
+                      <div className="zeal-panel">
+                        <div className="zeal-service-name">{req.zealService}</div>
+                        <p className="zeal-service-desc">{req.zealDesc}</p>
+                        <div className="zeal-tags">
+                          {req.zealTags.map((t, j) => (
+                            <span key={j} className="zeal-tag">{t}</span>
+                          ))}
                         </div>
-                      )}
+                      </div>
                     </div>
                   );
                 })}
