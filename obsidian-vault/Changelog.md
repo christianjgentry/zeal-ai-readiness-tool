@@ -9,6 +9,9 @@ Running log of significant changes to the project.
 
 ## 2026
 
+### Gate results behind contact form (lead capture)
+Results are now gated behind a required contact form (name/email/company). New `ContactGate.jsx` component renders as a full-page card between survey completion and results. Supabase submission happens at the gate (non-blocking on failure). Return visitors with `saved=true` skip the gate. `SaveResultsModal.jsx` deleted — PDF download moved to a direct button on the results page. localStorage shape updated to include `contactInfo`.
+
 ### Add Supabase persistence, admin dashboard, and PDF export
 Survey results can now be saved to Supabase (Postgres). New features:
 - **Save Results Modal** (`SaveResultsModal.jsx`) — collects name/email/company after results, inserts to Supabase `submissions` table

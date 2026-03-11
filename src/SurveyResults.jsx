@@ -1,5 +1,4 @@
-import { useState } from "react";
-import SaveResultsModal from "./SaveResultsModal";
+import { generateResultsPdf } from "./pdfExport";
 
 const spectrumColors = ["#B0BDD0", "#8FA0BA", "#6E83A3", "#4D668C", "#2C4975", "#0B2545"];
 
@@ -12,10 +11,18 @@ const phaseNames = [
   "Autonomous at Scale",
 ];
 
-export default function SurveyResults({ results, answers, saved, onSaved, onExplorePhase, onRetake }) {
+export default function SurveyResults({ results, contactInfo, onExplorePhase, onRetake }) {
   const { phase, average, weakest, categoryScores } = results;
   const maxScore = 6;
-  const [showSaveModal, setShowSaveModal] = useState(false);
+
+  const handleDownloadPdf = () => {
+    generateResultsPdf({
+      name: contactInfo?.name || "Assessment User",
+      email: contactInfo?.email || "",
+      company: contactInfo?.company || "Organization",
+      results,
+    });
+  };
 
   return (
     <div className="results">
@@ -113,23 +120,14 @@ export default function SurveyResults({ results, answers, saved, onSaved, onExpl
         </button>
         <button
           className="survey-btn survey-btn-next results-save-btn"
-          onClick={() => setShowSaveModal(true)}
+          onClick={handleDownloadPdf}
         >
-          {saved ? "Results Saved" : "Save or Download Results"}
+          Download PDF Report
         </button>
         <button className="survey-btn survey-btn-back" onClick={onRetake}>
           Retake Assessment
         </button>
       </div>
-
-      {showSaveModal && (
-        <SaveResultsModal
-          answers={answers}
-          results={results}
-          onSaved={() => { onSaved(); }}
-          onClose={() => setShowSaveModal(false)}
-        />
-      )}
     </div>
   );
 }

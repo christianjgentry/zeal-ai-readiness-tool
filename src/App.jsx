@@ -3,6 +3,7 @@ import "./App.css";
 import ParticleHeader from "./ParticleHeader";
 import Survey from "./Survey";
 import SurveyResults from "./SurveyResults";
+import ContactGate from "./ContactGate";
 import { computeCategoryScores, computeOverallPhase } from "./scoring";
 import { phases } from "./phaseData";
 import { supabase } from "./supabaseClient";
@@ -39,10 +40,11 @@ export default function App() {
   })[0];
 
   const [active, setActive] = useState(null);
-  const [view, setView] = useState("framework"); // "framework" | "survey" | "results"
+  const [view, setView] = useState("framework"); // "framework" | "survey" | "contact" | "results"
   const [answers, setAnswers] = useState(() => storedData.answers || {});
   const [results, setResults] = useState(() => storedData.results || null);
   const [saved, setSaved] = useState(() => !!storedData.saved);
+  const [contactInfo, setContactInfo] = useState(() => storedData.contactInfo || null);
   const sel = active !== null ? phases[active] : null;
 
   // Admin routing
@@ -103,6 +105,14 @@ export default function App() {
       results: res,
       completedAt: Date.now(),
     }));
+    setView("contact");
+  };
+
+  const handleContactSubmit = (info) => {
+    setContactInfo(info);
+    setSaved(true);
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...stored, saved: true, contactInfo: info }));
     setView("results");
   };
 
@@ -111,21 +121,20 @@ export default function App() {
     setAnswers({});
     setResults(null);
     setSaved(false);
+    setContactInfo(null);
     setView("survey");
   };
 
   const handleViewResults = () => {
-    setView("results");
+    if (results && saved) {
+      setView("results");
+    } else if (results) {
+      setView("contact");
+    }
   };
 
   const handleExplorePhase = (idx) => {
     handlePhase(idx);
-  };
-
-  const handleSaved = () => {
-    setSaved(true);
-    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...stored, saved: true }));
   };
 
   const handleAdminLogout = async () => {
@@ -194,12 +203,16 @@ export default function App() {
             onComplete={handleSurveyComplete}
             onCancel={() => setView("framework")}
           />
+        ) : view === "contact" && results ? (
+          <ContactGate
+            answers={answers}
+            results={results}
+            onSubmit={handleContactSubmit}
+          />
         ) : view === "results" && results ? (
           <SurveyResults
             results={results}
-            answers={answers}
-            saved={saved}
-            onSaved={handleSaved}
+            contactInfo={contactInfo}
             onExplorePhase={handleExplorePhase}
             onRetake={handleRetake}
           />
