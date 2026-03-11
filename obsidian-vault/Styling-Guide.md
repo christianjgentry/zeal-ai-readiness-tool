@@ -6,8 +6,8 @@ tags:
 # Styling Guide
 
 All styles live in two files:
-- `src/index.css` (70 lines) — CSS variables (design tokens), global resets
-- `src/App.css` (1,246 lines) — All component styles, responsive rules
+- `src/index.css` — CSS variables (design tokens), global resets
+- `src/App.css` — All component styles, responsive rules
 
 ## Design Tokens (CSS Variables)
 
@@ -99,10 +99,15 @@ Component-prefixed kebab-case:
 - `.req-*` — Requirement cards
 - `.zeal-*` — Zeal service panels
 - `.assessment-*` — CTA buttons and assessment section
+- `.save-modal-*` — Save results modal (form, inputs, buttons, states)
+- `.admin-*` — Admin dashboard (login, stats, table, filters, detail, pagination)
+- `.admin-login-*` — Admin login page
+- `.admin-detail-*` — Admin submission detail view
 
 ## Key Layout Values
 
-- **Max width**: 1,080px (`.app-inner`)
+- **Max width**: 1,080px (`.app-inner`), 1,200px (`.admin`)
+- **Admin max width**: 1,200px (wider for table layout)
 - **Section padding**: 28px 40px
 - **Card border-radius**: `var(--radius-xl)` (10px)
 - **Card shadow**: `0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)`

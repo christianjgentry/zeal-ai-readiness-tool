@@ -1,3 +1,6 @@
+import { useState } from "react";
+import SaveResultsModal from "./SaveResultsModal";
+
 const spectrumColors = ["#B0BDD0", "#8FA0BA", "#6E83A3", "#4D668C", "#2C4975", "#0B2545"];
 
 const phaseNames = [
@@ -9,9 +12,10 @@ const phaseNames = [
   "Autonomous at Scale",
 ];
 
-export default function SurveyResults({ results, onExplorePhase, onRetake }) {
+export default function SurveyResults({ results, answers, saved, onSaved, onExplorePhase, onRetake }) {
   const { phase, average, weakest, categoryScores } = results;
   const maxScore = 6;
+  const [showSaveModal, setShowSaveModal] = useState(false);
 
   return (
     <div className="results">
@@ -58,7 +62,7 @@ export default function SurveyResults({ results, onExplorePhase, onRetake }) {
       <div className="results-section">
         <div className="results-section-title">Category Breakdown</div>
         <div className="results-bars">
-          {categoryScores.map((cat, i) => {
+          {categoryScores.map((cat) => {
             const pct = (cat.score / maxScore) * 100;
             const colorIdx = Math.min(Math.floor(cat.score) - 1, 5);
             const color = spectrumColors[Math.max(0, colorIdx)];
@@ -107,10 +111,25 @@ export default function SurveyResults({ results, onExplorePhase, onRetake }) {
         <button className="survey-btn survey-btn-next" onClick={() => onExplorePhase(phase - 1)}>
           Explore Phase {phase} Details
         </button>
+        <button
+          className="survey-btn survey-btn-next results-save-btn"
+          onClick={() => setShowSaveModal(true)}
+        >
+          {saved ? "Results Saved" : "Save or Download Results"}
+        </button>
         <button className="survey-btn survey-btn-back" onClick={onRetake}>
           Retake Assessment
         </button>
       </div>
+
+      {showSaveModal && (
+        <SaveResultsModal
+          answers={answers}
+          results={results}
+          onSaved={() => { onSaved(); }}
+          onClose={() => setShowSaveModal(false)}
+        />
+      )}
     </div>
   );
 }

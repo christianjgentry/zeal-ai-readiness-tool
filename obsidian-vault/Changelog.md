@@ -7,6 +7,19 @@ tags:
 
 Running log of significant changes to the project.
 
+## 2026
+
+### Add Supabase persistence, admin dashboard, and PDF export
+Survey results can now be saved to Supabase (Postgres). New features:
+- **Save Results Modal** (`SaveResultsModal.jsx`) — collects name/email/company after results, inserts to Supabase `submissions` table
+- **PDF Export** (`pdfExport.js`) — client-side branded PDF generation with jsPDF
+- **Admin Dashboard** (`AdminDashboard.jsx`) — password-protected at `#/admin`, shows submissions table with search/filter/pagination and detail view
+- **Admin Login** (`AdminLogin.jsx`) — Supabase email/password auth
+- **Phase data extracted** (`phaseData.js`) — moved `phases` array out of App.jsx for reuse
+- **Supabase client** (`supabaseClient.js`) — singleton using `VITE_SUPABASE_*` env vars
+- **Deploy workflow** updated to inject Supabase secrets
+- **localStorage hydration** refactored to use `useState` initializers (fixes React 19 lint rule)
+
 ## 2025
 
 ### Move IT readiness spectrum into results hero card

@@ -9,7 +9,7 @@ All data shapes used in the application.
 
 ## Phase Object
 
-Defined inline in `src/App.jsx` (6 objects in `phases` array):
+Defined in `src/phaseData.js` (6 objects in `phases` array):
 
 ```javascript
 {
@@ -130,14 +130,41 @@ Computed by [[Scoring-Logic]] functions:
 {
   answers: AnswerObject,     // See above
   results: ResultsObject,   // See above (null until survey completed)
-  completedAt: number        // Date.now() timestamp
+  completedAt: number,       // Date.now() timestamp
+  saved: boolean             // true if results submitted to Supabase
 }
 ```
 
 **Lifecycle**:
 - Created incrementally as user answers questions
 - Fully populated on survey completion
+- `saved: true` added when user saves to Supabase
 - Removed entirely on retake (`localStorage.removeItem()`)
+
+## Supabase `submissions` Table
+
+Persisted in Supabase Postgres. Schema in `supabase/migrations/`.
+
+```javascript
+{
+  id: UUID,                  // Auto-generated
+  name: string,              // User's full name
+  email: string,             // User's email
+  company: string,           // Organization name
+  answers: JSONB,            // Raw AnswerObject
+  results: JSONB,            // Full ResultsObject
+  phase: integer,            // 1-6
+  average: numeric(3,1),     // Overall trajectory score
+  weakest_category: string,  // Category name (nullable)
+  completed_at: timestamptz  // Auto-set to now()
+}
+```
+
+**RLS Policies**:
+- `anon` → INSERT only (public survey submissions)
+- `authenticated` → SELECT all (admin dashboard reads)
+
+**Indexes**: `phase`, `company`, `completed_at`
 
 ## Category IDs → Names
 

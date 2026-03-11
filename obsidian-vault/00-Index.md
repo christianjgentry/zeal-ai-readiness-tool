@@ -17,9 +17,9 @@ tags:
 - [[Phase-Framework]] — The 6-phase maturity model, requirements, blockers, next steps
 
 ## Reference
-- [[Components]] — All components: props, state, key functions
-- [[Data-Schema]] — All data shapes: phases, questions, answers, results, localStorage
-- [[Deployment]] — Build commands, GitHub Actions, Vite config
+- [[Components]] — All components: props, state, key functions (includes SaveResultsModal, AdminLogin, AdminDashboard, pdfExport, supabaseClient, phaseData)
+- [[Data-Schema]] — All data shapes: phases, questions, answers, results, localStorage, Supabase submissions table
+- [[Deployment]] — Build commands, GitHub Actions, Vite config, Supabase setup, environment variables
 
 ## Project History
 - [[Changelog]] — Running log of significant changes
